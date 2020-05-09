@@ -1,0 +1,25 @@
+<div class="col-sm-11 mx-auto">
+    <h3 class="m-t-20 m-b-20">Location List</h3>
+    <table class="table table-hover dataTable">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Address</th>
+                <th scope="col">Created</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor='let l of service.list.data'>				
+                <td scope="col" (click)='fillForm(l)'>{{l.id}}</td>
+                <td scope="col" (click)='fillForm(l)'>{{l.name}}</td>
+                <td scope="col" (click)='fillForm(l)'>{{l.address}}</td>
+                <td scope="col" (click)='fillForm(l)'>{{l.created_at | date : 'short'}}</td>
+                <td scope="col">
+                    <button (click)="onDelete(l.id)" class="btn btn-danger">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
