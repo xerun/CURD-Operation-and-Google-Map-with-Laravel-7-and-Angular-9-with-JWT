@@ -105,6 +105,9 @@ Action: Delete Lab
 Method: Delete
 Response: []  
 
+### Unit Testing Pass
+![Image](https://github.com/xerun/CURD-Operation-and-Google-Map-with-Laravel-7-and-Angular-9-with-JWT/blob/master/testcase.JPG)
+
 ## Frontend Application (lab-app)
 I made the frontend application in Angular 9. It has the following folder structure.  
 app  
