@@ -25,38 +25,45 @@ class LabTest extends TestCase
     /** @test */
     public function testIndex()
     {
+        $this->withoutMiddleware();    
         $response = $this->get('/api/labs');
         $response
             ->assertStatus(200)
             ->assertJsonStructure([
-                'id',
-                'name',
-                'location_id',
-                'location_name',
-                'created_at',
-                'updated_id'
+                'data' => [[
+                    'id',
+                    'name',
+                    'location_id',
+                    'location_name',
+                    'created_at',
+                    'updated_at'
+                ]]
             ]);
     }
 
     /** @test */
     public function testShow()
     {
+        $this->withoutMiddleware();    
         $response = $this->get('/api/labs/1');
         $response
             ->assertStatus(200)
             ->assertJsonStructure([
-                'id',
-                'name',
-                'location_id',
-                'location_name',
-                'created_at',
-                'updated_id'
+                'data' => [
+                    'id',
+                    'name',
+                    'location_id',
+                    'location_name',
+                    'created_at',
+                    'updated_at'
+                ]
             ]);
     }
 
     /** @test */
     public function testInvalidStore()
     {
+        $this->withoutMiddleware();
         $response = $this->post('api/labs', [
             'name'          =>  'Lab-2 Test',
             'location_id'   =>  '0'
@@ -66,13 +73,14 @@ class LabTest extends TestCase
             ->assertStatus(403)
             ->assertJsonStructure([
                 'error',
-                'message'
+                'messages'
             ]);
     }
 
     /** @test */
     public function testStore()
     {
+        $this->withoutMiddleware();
         $response = $this->post('api/labs', [
             'name'          =>  'Lab2 Test',
             'location_id'   =>  '2'
@@ -81,18 +89,21 @@ class LabTest extends TestCase
         $response
             ->assertStatus(201)
             ->assertJsonStructure([
-                'id',
-                'name',
-                'location_id',
-                'location_name',
-                'created_at',
-                'updated_id'
+                'data' => [
+                    'id',
+                    'name',
+                    'location_id',
+                    'location_name',
+                    'created_at',
+                    'updated_at'
+                ]
             ]);
     }
 
     /** @test */
     public function testInvalidUpdate()
     {
+        $this->withoutMiddleware();
         $response = $this->put('api/labs/1', [
             'name'          =>  'Lab-1 Test',
             'location_id'   =>  '0'
@@ -102,43 +113,37 @@ class LabTest extends TestCase
             ->assertStatus(403)
             ->assertJsonStructure([
                 'error',
-                'message'
+                'messages'
             ]);
     }
 
     /** @test */
     public function testUpdate()
     {
+        $this->withoutMiddleware();
         $response = $this->put('api/labs/1', [
             'name'          =>  'Lab-1 Test',
             'location_id'   =>  '2'
         ]);
 
         $response
-            ->assertStatus(201)
+            ->assertStatus(200)
             ->assertJsonStructure([
-                'id',
-                'name',
-                'location_id',
-                'location_name',
-                'created_at',
-                'updated_id'
+                'data' => [
+                    'id',
+                    'name',
+                    'location_id',
+                    'location_name',
+                    'created_at',
+                    'updated_at'
+                ]
             ]);
-    }
-
-    /** @test */
-    public function testDelete()
-    {
-        $response = $this->delete('api/labs/2');
-
-        $response
-            ->assertStatus(204)
-            ->assertJsonStructure(null);
     }
 
     /** @test */
     public function testInvalidDelete()
     {
+        $this->withoutMiddleware();
         $response = $this->delete('api/labs/10');
 
         $response
@@ -148,4 +153,14 @@ class LabTest extends TestCase
                 'message',
             ]);
     }
+
+    /** @test */
+    public function testDelete()
+    {
+        $this->withoutMiddleware();
+        $response = $this->delete('api/labs/1');
+
+        $response
+            ->assertStatus(204);
+    }    
 }

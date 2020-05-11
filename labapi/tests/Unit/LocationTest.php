@@ -27,38 +27,47 @@ class LocationTest extends TestCase
     /** @test */
     public function testIndex()
     {
+        $this->withoutMiddleware();
         $response = $this->get('/api/locations');
         $response
             ->assertStatus(200)
             ->assertJsonStructure([
-                'id',
-                'name',
-                'location_id',
-                'location_name',
-                'created_at',
-                'updated_id'
+                'data' => [[
+                    'id',
+                    'name',
+                    'address',
+                    'latitude',
+                    'longitude',
+                    'created_at',
+                    'updated_at'
+                ]]
             ]);
     }
 
     /** @test */
     public function testShow()
     {
+        $this->withoutMiddleware();
         $response = $this->get('/api/locations/1');
         $response
             ->assertStatus(200)
             ->assertJsonStructure([
-                'id',
-                'name',
-                'location_id',
-                'location_name',
-                'created_at',
-                'updated_id'
+                'data' => [
+                    'id',
+                    'name',
+                    'address',
+                    'latitude',
+                    'longitude',
+                    'created_at',
+                    'updated_at'
+                ]
             ]);
     }
 
     /** @test */
     public function testStore()
     {
+        $this->withoutMiddleware();
         $response = $this->post('api/locations', [
             'name'          =>  'Location2 Test',
             'address'       =>  'Location2 Address',
@@ -67,20 +76,24 @@ class LocationTest extends TestCase
         ]);
 
         $response
-            ->assertStatus(403)
+            ->assertStatus(201)
             ->assertJsonStructure([
-                'id',
-                'address',
-                'latitude',
-                'longitude',
-                'created_at',
-                'updated_id'
+                'data' => [
+                    'id',
+                    'name',
+                    'address',
+                    'latitude',
+                    'longitude',
+                    'created_at',
+                    'updated_at'
+                ]
             ]);
     }
 
     /** @test */
     public function testUdate()
     {
+        $this->withoutMiddleware();
         $response = $this->put('api/locations/1', [
             'name'          =>  'Location-1 Test',
             'address'       =>  'Location-1 Address',
@@ -89,30 +102,24 @@ class LocationTest extends TestCase
         ]);
 
         $response
-            ->assertStatus(403)
+            ->assertStatus(200)
             ->assertJsonStructure([
-                'id',
-                'address',
-                'latitude',
-                'longitude',
-                'created_at',
-                'updated_id'
+                'data' => [
+                    'id',
+                    'name',
+                    'address',
+                    'latitude',
+                    'longitude',
+                    'created_at',
+                    'updated_at'
+                ]
             ]);
-    }
-
-    /** @test */
-    public function testDelete()
-    {
-        $response = $this->delete('api/locations/1');
-
-        $response
-            ->assertStatus(204)
-            ->assertJsonStructure(null);
     }
 
     /** @test */
     public function testInvalidDelete()
     {
+        $this->withoutMiddleware();
         $response = $this->delete('api/locations/10');
 
         $response
@@ -121,5 +128,15 @@ class LocationTest extends TestCase
                 'error',
                 'message',
             ]);
+    }
+
+    /** @test */
+    public function testDelete()
+    {
+        $this->withoutMiddleware();
+        $response = $this->delete('api/locations/1');
+
+        $response
+            ->assertStatus(204);
     }
 }
